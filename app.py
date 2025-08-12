@@ -2,13 +2,13 @@ import streamlit as st
 import os
 from huggingface_hub import InferenceClient
 
-# Your HF model repo ID
+
 MODEL_ID = "Eniiifeoluwa/mental-health-llama2-merged"
 
-# Get your HF API token from environment variable (set this in your deployment environment)
+
 API_TOKEN = os.getenv("HF_API_TOKEN")
 
-# Initialize InferenceClient with just the token
+
 client = InferenceClient(token=API_TOKEN)
 
 st.title("🤗 Mental Health Chatbot")
@@ -34,7 +34,7 @@ def bot_message(msg):
         </div>
     """, unsafe_allow_html=True)
 
-# Show previous chat messages
+
 for chat in st.session_state.history:
     user_message(chat['user'])
     bot_message(chat['bot'])
@@ -45,13 +45,12 @@ if st.button("Send") and user_input.strip():
     st.session_state.history.append({'user': user_input, 'bot': "..."})
 
     with st.spinner("Thinking..."):
-        # Format prompt as your model expects
+        
         prompt = f"<s>[INST] <<SYS>>\nYou are a helpful and empathetic mental health assistant.\n<</SYS>>\n\n{user_input} [/INST]"
 
-        # Call HF inference API
         response = client.text_generation(
+            prompt,
             model=MODEL_ID,
-            inputs=prompt,
             parameters={
                 "max_new_tokens": 200,
                 "temperature": 0.5,
