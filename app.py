@@ -6,7 +6,7 @@ from datetime import datetime
 
 # Configuration
 MODEL_ID = "Eniiifeoluwa/mental-health-llama2-merged"
-API_TOKEN = os.getenv("HF_API_TOKEN")
+API_TOKEN = os.getenv("API_TOKEN")
 
 # Initialize client
 if API_TOKEN:
