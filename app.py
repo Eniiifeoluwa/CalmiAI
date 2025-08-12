@@ -7,7 +7,8 @@ MODEL_ID = "Eniiifeoluwa/mental-health-llama2-merged"
 API_TOKEN = os.getenv("HF_API_TOKEN")
 
 
-client = InferenceClient(repo_id=MODEL_ID, token=API_TOKEN)
+client = InferenceClient(model_id=MODEL_ID, token=API_TOKEN)
+
 
 st.title("🤗 Mental Health Chatbot")
 
