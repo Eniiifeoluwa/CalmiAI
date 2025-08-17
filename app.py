@@ -30,17 +30,14 @@ def load_model():
 
 # ✅ Response generator
 def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=0.4):
-    formatted_prompt = f"""Your name is Calmi, and you are a Mental health and therapy assistant.
-    Below is a conversation that describes a therapy session, paired with an input that provides further context.
-    Write a response that appropiately answers the questions and advise with empathy.
-    Before answering, think carefully about the question and create a step-by-step chain of thoughts to ensure a logical and accurate response.
-
+    formatted_prompt = f"""You are Calmi, a compassionate mental health assistant.
+    Answer the question below with empathy and supportive guidance.
     ### Question:
     {prompt}
     ### Response:
     <think>
-    
     """
+
 
     enc = tokenizer(
         formatted_prompt, 
