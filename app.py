@@ -95,7 +95,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-st.image("assests\calmi.png", use_container_width=True)
+st.image("assests/calmi.png", use_container_width=True)
 st.markdown("""
 <style>
     .main-header { text-align: center; color: #2E8B57; margin-bottom: 20px; }
