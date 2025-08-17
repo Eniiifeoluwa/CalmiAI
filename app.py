@@ -5,7 +5,6 @@ from datetime import datetime
 import accelerate
 import os
 
-
 # Model name
 MODEL_NAME = "Eniiifeoluwa/mental-gemma"
 
@@ -39,9 +38,9 @@ def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=
     """
 
     enc = tokenizer(
-        formatted_prompt, 
-        return_tensors="pt", 
-        truncation=True, 
+        formatted_prompt,
+        return_tensors="pt",
+        truncation=True,
         max_length=1024
     ).to(model.device)
 
@@ -92,8 +91,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 🔥 KEEPING ALL YOUR STREAMLIT UI & FEATURES UNCHANGED 🔥
-
+# 🔥 Streamlit UI styling
 st.markdown("""
 <style>
     .main-header { text-align: center; color: #2E8B57; margin-bottom: 20px; }
@@ -191,35 +189,35 @@ if not st.session_state.show_disclaimer and model_loaded:
     # Input section
     st.markdown("---")
     col1, col2 = st.columns([4, 1])
-with col1:
-    user_input = st.text_area(
-        "How are you feeling today? Share what's on your mind...",
-        height=100,
-        placeholder="Type your message here...",
-        key="user_input"
-    )
-with col2:
-    st.write("")
-    send_button = st.button("Send 📤", type="primary")
-    clear_button = st.button("Clear Chat 🗑️")
+    with col1:
+        user_input = st.text_area(
+            "How are you feeling today? Share what's on your mind...",
+            height=100,
+            placeholder="Type your message here...",
+            key="user_input"
+        )
+    with col2:
+        st.write("")
+        send_button = st.button("Send 📤", type="primary")
+        clear_button = st.button("Clear Chat 🗑️")
 
-if send_button and st.session_state.user_input.strip():
-    timestamp = datetime.now().strftime("%H:%M")
-    st.session_state.history.append({
-        'user': st.session_state.user_input,
-        'bot': "...",
-        'timestamp': timestamp,
-        'bot_timestamp': None
-    })
-    with st.spinner("🤔 Thinking..."):
-        bot_reply = generate_response(st.session_state.user_input, model, tokenizer)
-        bot_timestamp = datetime.now().strftime("%H:%M")
-        st.session_state.history[-1]['bot'] = bot_reply
-        st.session_state.history[-1]['bot_timestamp'] = bot_timestamp
-    
+    if send_button and st.session_state.user_input.strip():
+        timestamp = datetime.now().strftime("%H:%M")
+        st.session_state.history.append({
+            'user': st.session_state.user_input,
+            'bot': "...",
+            'timestamp': timestamp,
+            'bot_timestamp': None
+        })
+        with st.spinner("🤔 Thinking..."):
+            bot_reply = generate_response(st.session_state.user_input, model, tokenizer)
+            bot_timestamp = datetime.now().strftime("%H:%M")
+            st.session_state.history[-1]['bot'] = bot_reply
+            st.session_state.history[-1]['bot_timestamp'] = bot_timestamp
 
-    st.session_state.user_input = ""
-    st.rerun()
+        # ✅ Clear the input box after sending
+        st.session_state.user_input = ""
+        st.rerun()
 
     if clear_button:
         st.session_state.history = []
@@ -236,7 +234,7 @@ if send_button and st.session_state.user_input.strip():
         - [NAMI (National Alliance on Mental Illness)](https://www.nami.org)
         - [BetterHelp Online Therapy](https://www.betterhelp.com)
         - [Talkspace](https://www.talkspace.com)
-        
+
         **Self-Care Tips:**
         - Practice deep breathing exercises
         - Maintain a regular sleep schedule
@@ -257,7 +255,12 @@ if send_button and st.session_state.user_input.strip():
     for i, (mood, message) in enumerate(moods.items()):
         col = [col1, col2, col3, col4][i]
         if col.button(mood):
-            st.session_state.history.append({'user': message, 'bot': "...", 'timestamp': datetime.now().strftime("%H:%M"), 'bot_timestamp': None})
+            st.session_state.history.append({
+                'user': message,
+                'bot': "...",
+                'timestamp': datetime.now().strftime("%H:%M"),
+                'bot_timestamp': None
+            })
             st.rerun()
 
 elif not model_loaded:
