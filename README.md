@@ -1,6 +1,6 @@
 # 🤗 Calmi - Mental Health Support Chatbot
 
-![Calmi Banner](assets/calmi_banner.png)
+![Calmi Banner](assets/calmi.png)
 
 Calmi is an AI-powered mental health and therapy assistant designed to provide empathetic, supportive conversations. Built using **transformers** and a custom-trained model, Calmi helps users process thoughts and emotions in a safe, conversational environment.
 
