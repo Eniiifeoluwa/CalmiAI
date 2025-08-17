@@ -118,7 +118,7 @@ if 'user_name' not in st.session_state:
     st.session_state.user_name = ""
 
 # Header
-st.markdown('<h1 class="main-header">🤗 Mental Health Support Chatbot</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">🤗 Calmi: Mental Health Support Chatbot</h1>', unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
