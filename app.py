@@ -7,7 +7,7 @@ import os
 
 
 # Model name
-MODEL_NAME = "Eniiifeoluwa/mental-gemma"
+MODEL_NAME = "Eniiifeoluwa/calmi"
 
 # Device setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -29,13 +29,17 @@ def load_model():
     return model, tokenizer
 
 # ✅ Response generator
-def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=0.2):
-    formatted_prompt = f"""
-    instruction: You are a professional, empathetic mental health assistant.  
-    Be concise, specific, and supportive. Show empathy and provide the best advice.  
-    Avoid hallucinations. Always answer as if you are Samuel, a caring listener.  
-    The user said: {prompt}  
-    output:
+def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=0.4):
+    formatted_prompt = f"""Your name is Calmi, and you are a Mental health and therapy assistant.
+    Below is a conversation that describes a therapy session, paired with an input that provides further context.
+    Write a response that appropiately answers the questions and advise with empathy.
+    Before answering, think carefully about the question and create a step-by-step chain of thoughts to ensure a logical and accurate response.
+
+    ### Question:
+    {prompt}
+    ### Response:
+    <think>
+    
     """
 
     enc = tokenizer(
@@ -52,7 +56,7 @@ def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=
                 max_new_tokens=max_new_tokens,
                 do_sample=True,
                 temperature=temperature,
-                top_p=0.9,
+                top_p=0.8,
                 top_k=40,
                 eos_token_id=tokenizer.eos_token_id,
                 pad_token_id=tokenizer.pad_token_id,
@@ -62,10 +66,11 @@ def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=
         sampled_text = tokenizer.decode(sampled_ids[0], skip_special_tokens=True)
 
         # ✅ Extract only output part
-        if "output:" in sampled_text:
-            answer = sampled_text.split("output:")[-1].strip()
+        if "<think>" in sampled_text:
+            answer = sampled_text.split("<think>", 1)[1].strip()
         else:
-            answer = sampled_text.strip()
+            answer = sampled_text
+
 
         # Ensure punctuation spacing
         answer = answer.replace(".", ". ").replace("?", "? ").replace("!", "! ")
