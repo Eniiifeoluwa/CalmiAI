@@ -52,7 +52,7 @@ def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=
                 max_new_tokens=max_new_tokens,
                 do_sample=True,
                 temperature=temperature,
-                top_p=0.8,
+                top_p=0.9,
                 top_k=40,
                 eos_token_id=tokenizer.eos_token_id,
                 pad_token_id=tokenizer.pad_token_id,
