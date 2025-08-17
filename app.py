@@ -29,7 +29,7 @@ def load_model():
     return model, tokenizer
 
 # ✅ Response generator
-def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=0.7):
+def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=0.2):
     formatted_prompt = f"""
     instruction: You are a professional, empathetic mental health assistant.  
     Be concise, specific, and supportive. Show empathy and provide the best advice.  
