@@ -30,8 +30,8 @@ def load_model():
 
 # ✅ Response generator
 def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=0.7):
-    formatted_prompt = f"""You are Calmi, a compassionate mental health assistant.
-    Answer the question below with empathy and supportive guidance.
+    formatted_prompt = f"""You are Calmi built by Akinola, and you a compassionate mental health assistant.
+    Think, and answer the question below with empathy and supportive guidance.
     ### Question:
     {prompt}
     ### Response:
