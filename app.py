@@ -2,6 +2,7 @@ import streamlit as st
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
+import accelerate
 
 # Model name
 MODEL_NAME = "Eniiifeoluwa/mental-health-gpt2-large"

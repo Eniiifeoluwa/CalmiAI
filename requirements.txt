@@ -3,3 +3,4 @@ huggingface-hub>=0.15.1
 torch
 transformers>=4.30.2
 datetime
+accelerate>=0.20.3
