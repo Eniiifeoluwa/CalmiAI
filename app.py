@@ -29,7 +29,7 @@ def load_model():
     return model, tokenizer
 
 # ✅ Response generator
-def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=0.4):
+def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=0.7):
     formatted_prompt = f"""You are Calmi, a compassionate mental health assistant.
     Answer the question below with empathy and supportive guidance.
     ### Question:
@@ -43,7 +43,7 @@ def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=
         formatted_prompt, 
         return_tensors="pt", 
         truncation=True, 
-        max_length=1024
+        max_length=512
     ).to(model.device)
 
     try:
@@ -53,8 +53,8 @@ def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=
                 max_new_tokens=max_new_tokens,
                 do_sample=True,
                 temperature=temperature,
-                top_p=0.8,
-                top_k=40,
+                top_p=0.85,
+                top_k=30,
                 eos_token_id=tokenizer.eos_token_id,
                 pad_token_id=tokenizer.pad_token_id,
                 repetition_penalty=1.2,
