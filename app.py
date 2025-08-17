@@ -11,7 +11,7 @@ MODEL_NAME = "Eniiifeoluwa/mental-gemma"
 # Device setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# ✅ Cached model loader
+# Cached model loader
 @st.cache_resource(show_spinner="Loading model... please wait ⏳")
 def load_model():
     model = AutoModelForCausalLM.from_pretrained(
@@ -27,7 +27,7 @@ def load_model():
     model.eval()
     return model, tokenizer
 
-# ✅ Response generator
+# Response generator
 def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=0.7):
     formatted_prompt = f"""
     instruction: You are a professional, empathetic mental health assistant.  
@@ -38,9 +38,9 @@ def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=
     """
 
     enc = tokenizer(
-        formatted_prompt,
-        return_tensors="pt",
-        truncation=True,
+        formatted_prompt, 
+        return_tensors="pt", 
+        truncation=True, 
         max_length=1024
     ).to(model.device)
 
@@ -60,7 +60,7 @@ def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=
             )
         sampled_text = tokenizer.decode(sampled_ids[0], skip_special_tokens=True)
 
-        # ✅ Extract only output part
+        # Extract only output part
         if "output:" in sampled_text:
             answer = sampled_text.split("output:")[-1].strip()
         else:
@@ -91,7 +91,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 🔥 Streamlit UI styling
+# Custom CSS
 st.markdown("""
 <style>
     .main-header { text-align: center; color: #2E8B57; margin-bottom: 20px; }
@@ -105,13 +105,15 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state
+# Session state initialization
 if 'history' not in st.session_state:
     st.session_state.history = []
 if 'show_disclaimer' not in st.session_state:
     st.session_state.show_disclaimer = True
 if 'user_name' not in st.session_state:
     st.session_state.user_name = ""
+if 'user_input' not in st.session_state:
+    st.session_state.user_input = ""
 
 # Header
 st.markdown('<h1 class="main-header">🤗 Mental Health Support Chatbot</h1>', unsafe_allow_html=True)
@@ -163,9 +165,7 @@ if not st.session_state.show_disclaimer and model_loaded:
         time_str = f'<div class="timestamp">{timestamp}</div>' if show_timestamps and timestamp else ""
         st.markdown(f"""
             <div class="user-message">
-                <div class="user-bubble">
-                    {msg} 😊
-                </div>
+                <div class="user-bubble">{msg} 😊</div>
                 {time_str}
             </div>
         """, unsafe_allow_html=True)
@@ -174,9 +174,7 @@ if not st.session_state.show_disclaimer and model_loaded:
         time_str = f'<div class="timestamp">{timestamp}</div>' if show_timestamps and timestamp else ""
         st.markdown(f"""
             <div class="bot-message">
-                <div class="bot-bubble">
-                    🤖 {msg}
-                </div>
+                <div class="bot-bubble">🤖 {msg}</div>
                 {time_str}
             </div>
         """, unsafe_allow_html=True)
@@ -189,18 +187,21 @@ if not st.session_state.show_disclaimer and model_loaded:
     # Input section
     st.markdown("---")
     col1, col2 = st.columns([4, 1])
+
     with col1:
-        user_input = st.text_area(
+        st.session_state.user_input = st.text_area(
             "How are you feeling today? Share what's on your mind...",
             height=100,
             placeholder="Type your message here...",
             key="user_input"
         )
+
     with col2:
         st.write("")
         send_button = st.button("Send 📤", type="primary")
         clear_button = st.button("Clear Chat 🗑️")
 
+    # Send message
     if send_button and st.session_state.user_input.strip():
         timestamp = datetime.now().strftime("%H:%M")
         st.session_state.history.append({
@@ -215,10 +216,11 @@ if not st.session_state.show_disclaimer and model_loaded:
             st.session_state.history[-1]['bot'] = bot_reply
             st.session_state.history[-1]['bot_timestamp'] = bot_timestamp
 
-        # ✅ Clear the input box after sending
+        # Clear input immediately
         st.session_state.user_input = ""
         st.rerun()
 
+    # Clear chat
     if clear_button:
         st.session_state.history = []
         st.success("Chat cleared! Feel free to start a new conversation.")
@@ -234,7 +236,7 @@ if not st.session_state.show_disclaimer and model_loaded:
         - [NAMI (National Alliance on Mental Illness)](https://www.nami.org)
         - [BetterHelp Online Therapy](https://www.betterhelp.com)
         - [Talkspace](https://www.talkspace.com)
-
+        
         **Self-Care Tips:**
         - Practice deep breathing exercises
         - Maintain a regular sleep schedule
