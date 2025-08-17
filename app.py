@@ -30,7 +30,7 @@ def load_model():
 
 # ✅ Response generator
 def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=0.7):
-    formatted_prompt = f"""You are Calmi built by Akinola, and you a compassionate mental health assistant.
+    formatted_prompt = f"""You are Calmi, you are built by Akinola, and you a compassionate mental health assistant.
     Think, and answer the question below with empathy and supportive guidance.
     ### Question:
     {prompt}
@@ -89,16 +89,13 @@ except Exception as e:
     st.error(f"Error loading model: {str(e)}")
     model_loaded = False
 
-# Streamlit Page Configuration
 st.set_page_config(
-    page_title="Mental Health Support Chatbot",
+    page_title="Calmi: Mental Health Support Chatbot",
     page_icon="🤗",
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
-# 🔥 KEEPING ALL YOUR STREAMLIT UI & FEATURES UNCHANGED 🔥
-
+st.image("assests\calmi.png", use_column_width=True)
 st.markdown("""
 <style>
     .main-header { text-align: center; color: #2E8B57; margin-bottom: 20px; }
