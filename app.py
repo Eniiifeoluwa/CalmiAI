@@ -65,8 +65,11 @@ def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=
         # ✅ Extract only output part
         if "<think>" in sampled_text:
             answer = sampled_text.split("<think>", 1)[1].strip()
+    # Stop at first asterisk if present
+            answer = answer.split("*", 1)[0].strip()
         else:
-            answer = sampled_text
+            answer = sampled_text.split("*", 1)[0].strip()
+
 
 
         # Ensure punctuation spacing
