@@ -3,6 +3,8 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from datetime import datetime
 import accelerate
+import os
+
 
 # Model name
 MODEL_NAME = "Eniiifeoluwa/mental-gemma"
@@ -50,8 +52,8 @@ def generate_response(prompt, model, tokenizer, max_new_tokens=200, temperature=
                 max_new_tokens=max_new_tokens,
                 do_sample=True,
                 temperature=temperature,
-                top_p=0.9,
-                top_k=30,
+                top_p=0.8,
+                top_k=40,
                 eos_token_id=tokenizer.eos_token_id,
                 pad_token_id=tokenizer.pad_token_id,
                 repetition_penalty=1.2,
@@ -189,27 +191,35 @@ if not st.session_state.show_disclaimer and model_loaded:
     # Input section
     st.markdown("---")
     col1, col2 = st.columns([4, 1])
-    with col1:
-        user_input = st.text_area(
-            "How are you feeling today? Share what's on your mind...",
-            height=100,
-            placeholder="Type your message here...",
-            key="user_input"
-        )
-    with col2:
-        st.write("")
-        send_button = st.button("Send 📤", type="primary")
-        clear_button = st.button("Clear Chat 🗑️")
+with col1:
+    user_input = st.text_area(
+        "How are you feeling today? Share what's on your mind...",
+        height=100,
+        placeholder="Type your message here...",
+        key="user_input"
+    )
+with col2:
+    st.write("")
+    send_button = st.button("Send 📤", type="primary")
+    clear_button = st.button("Clear Chat 🗑️")
 
-    if send_button and user_input.strip():
-        timestamp = datetime.now().strftime("%H:%M")
-        st.session_state.history.append({'user': user_input, 'bot': "...", 'timestamp': timestamp, 'bot_timestamp': None})
-        with st.spinner("🤔 Thinking..."):
-            bot_reply = generate_response(user_input, model, tokenizer)
-            bot_timestamp = datetime.now().strftime("%H:%M")
-            st.session_state.history[-1]['bot'] = bot_reply
-            st.session_state.history[-1]['bot_timestamp'] = bot_timestamp
-        st.rerun()
+if send_button and st.session_state.user_input.strip():
+    timestamp = datetime.now().strftime("%H:%M")
+    st.session_state.history.append({
+        'user': st.session_state.user_input,
+        'bot': "...",
+        'timestamp': timestamp,
+        'bot_timestamp': None
+    })
+    with st.spinner("🤔 Thinking..."):
+        bot_reply = generate_response(st.session_state.user_input, model, tokenizer)
+        bot_timestamp = datetime.now().strftime("%H:%M")
+        st.session_state.history[-1]['bot'] = bot_reply
+        st.session_state.history[-1]['bot_timestamp'] = bot_timestamp
+    
+
+    st.session_state.user_input = ""
+    st.rerun()
 
     if clear_button:
         st.session_state.history = []
