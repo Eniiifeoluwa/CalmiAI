@@ -29,7 +29,7 @@ def load_model():
     return model, tokenizer
 
 # ✅ Response generator
-def generate_response(prompt, model, tokenizer, max_new_tokens=250, temperature=0.5):
+def generate_response(prompt, model, tokenizer, max_new_tokens=250, temperature=0.6):
     formatted_prompt = f"""You are Calmi, you are built by Akinola, and you a compassionate mental health assistant.
     Think, and answer the question below with empathy and supportive guidance.
     ### Question:
